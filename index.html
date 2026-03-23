@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>{{ company.name }}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ===== CSS VARIABLES ===== */
+:root {
+  --blue-dark: #0a1628;
+  --blue-mid: #0e2044;
+  --blue: #1a3a6e;
+  --blue-accent: #1e5adc;
+  --blue-bright: #3b82f6;
+  --cyan: #06b6d4;
+  --steel: #8faec4;
+  --grey-light: #e8edf4;
+  --grey-mid: #c0ccd8;
+  --white: #f4f7fc;
+  --text-dark: #0a1628;
+  --text-body: #3d5068;
+  --orange: #f97316;
+  --font-display: 'Barlow Condensed', sans-serif;
+  --font-body: 'Barlow', sans-serif;
+}
+
+/* ===== RESET ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--font-body); background: var(--white); color: var(--text-body); overflow-x: hidden; }
+a { text-decoration: none; color: inherit; }
+img { max-width: 100%; }
+ul { list-style: none; }
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--blue-dark); }
+::-webkit-scrollbar-thumb { background: var(--blue-accent); border-radius: 3px; }
+
+/* ===== NAVBAR ===== */
+#navbar {
+  position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+  background: rgba(10,22,40,0.95); backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(30,90,220,0.2);
+  transition: all 0.3s ease;
+}
+.nav-inner {
+  max-width: 1280px; margin: 0 auto; padding: 0 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 70px;
+}
+.nav-logo {
+  display: flex; flex-direction: column; line-height: 1;
+}
+.nav-logo-main {
+  font-family: var(--font-display); font-size: 22px; font-weight: 800;
+  color: var(--white); letter-spacing: 0.5px;
+}
+.nav-logo-sub {
+  font-size: 10px; font-weight: 500; color: var(--cyan);
+  letter-spacing: 2px; text-transform: uppercase;
+}
+.nav-links { display: flex; align-items: center; gap: 8px; }
+.nav-links a {
+  font-family: var(--font-display); font-size: 15px; font-weight: 600;
+  color: var(--grey-mid); padding: 8px 14px; border-radius: 4px;
+  letter-spacing: 0.8px; text-transform: uppercase;
+  transition: color 0.2s, background 0.2s;
+}
+.nav-links a:hover { color: var(--white); background: rgba(59,130,246,0.15); }
+.nav-cta {
+  background: var(--blue-accent) !important; color: var(--white) !important;
+  border-radius: 4px !important; padding: 8px 20px !important;
+}
+.nav-cta:hover { background: var(--blue-bright) !important; }
+.hamburger {
+  display: none; flex-direction: column; gap: 5px; cursor: pointer;
+  padding: 8px; border: none; background: transparent;
+}
+.hamburger span {
+  width: 24px; height: 2px; background: var(--white);
+  border-radius: 2px; transition: all 0.3s;
+}
+.mobile-menu {
+  display: none; flex-direction: column; background: var(--blue-dark);
+  padding: 16px 24px 24px; border-top: 1px solid rgba(59,130,246,0.2);
+}
+.mobile-menu a {
+  font-family: var(--font-display); font-size: 18px; font-weight: 600;
+  color: var(--grey-mid); padding: 12px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  letter-spacing: 1px; text-transform: uppercase;
+  transition: color 0.2s;
+}
+.mobile-menu a:hover { color: var(--cyan); }
+.mobile-menu.open { display: flex; }
+
+/* ===== HERO ===== */
+#hero {
+  min-height: 100vh; background: var(--blue-dark);
+  position: relative; overflow: hidden;
+  display: flex; align-items: center;
+}
+.hero-grid-bg {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(30,90,220,0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(30,90,220,0.08) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+.hero-glow {
+  position: absolute; top: -200px; right: -200px;
+  width: 700px; height: 700px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(30,90,220,0.3) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-glow2 {
+  position: absolute; bottom: -300px; left: -100px;
+  width: 600px; height: 600px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(6,182,212,0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-inner {
+  max-width: 1280px; margin: 0 auto; padding: 140px 24px 80px;
+  position: relative; z-index: 1; width: 100%;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(6,182,212,0.12); border: 1px solid rgba(6,182,212,0.3);
+  color: var(--cyan); font-size: 12px; font-weight: 600; letter-spacing: 2px;
+  text-transform: uppercase; padding: 6px 16px; border-radius: 100px;
+  margin-bottom: 32px;
+}
+.hero-badge span { width: 6px; height: 6px; background: var(--cyan); border-radius: 50%; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+.hero-h1 {
+  font-family: var(--font-display); font-size: clamp(42px, 7vw, 84px);
+  font-weight: 800; color: var(--white); line-height: 1.0;
+  letter-spacing: -0.5px; max-width: 820px; margin-bottom: 10px;
+}
+.hero-h1 em { font-style: normal; color: var(--blue-bright); }
+.hero-accent-line {
+  display: flex; align-items: center; gap: 16px; margin-bottom: 28px;
+}
+.hero-line { height: 2px; width: 60px; background: var(--orange); border-radius: 2px; }
+.hero-tagline {
+  font-family: var(--font-display); font-size: clamp(18px, 3vw, 26px);
+  font-weight: 600; color: var(--steel); letter-spacing: 1px; text-transform: uppercase;
+}
+.hero-p {
+  font-size: 17px; font-weight: 300; color: var(--steel);
+  max-width: 560px; line-height: 1.75; margin-bottom: 48px;
+}
+.hero-btns { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 72px; }
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--blue-accent); color: var(--white);
+  font-family: var(--font-display); font-size: 16px; font-weight: 700;
+  letter-spacing: 1px; text-transform: uppercase;
+  padding: 15px 32px; border-radius: 4px; border: none; cursor: pointer;
+  transition: background 0.25s, transform 0.2s;
+}
+.btn-primary:hover { background: var(--blue-bright); transform: translateY(-2px); }
+.btn-outline {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: transparent; color: var(--white);
+  font-family: var(--font-display); font-size: 16px; font-weight: 700;
+  letter-spacing: 1px; text-transform: uppercase;
+  padding: 14px 32px; border-radius: 4px;
+  border: 1.5px solid rgba(255,255,255,0.25); cursor: pointer;
+  transition: border-color 0.25s, transform 0.2s;
+}
+.btn-outline:hover { border-color: var(--cyan); color: var(--cyan); transform: translateY(-2px); }
+.hero-stats {
+  display: flex; gap: 40px; flex-wrap: wrap;
+  padding-top: 36px; border-top: 1px solid rgba(255,255,255,0.08);
+}
+.stat-item { display: flex; flex-direction: column; }
+.stat-num {
+  font-family: var(--font-display); font-size: 36px; font-weight: 800;
+  color: var(--white); line-height: 1;
+}
+.stat-num span { color: var(--blue-bright); }
+.stat-label { font-size: 12px; font-weight: 500; color: var(--steel); letter-spacing: 1px; text-transform: uppercase; margin-top: 4px; }
+
+/* ===== SECTION COMMONS ===== */
+.section { padding: 96px 24px; }
+.section-dark { background: var(--blue-dark); }
+.section-mid { background: var(--blue-mid); }
+.container { max-width: 1280px; margin: 0 auto; }
+.section-label {
+  font-family: var(--font-display); font-size: 12px; font-weight: 700;
+  letter-spacing: 3px; text-transform: uppercase; color: var(--cyan);
+  margin-bottom: 12px;
+}
+.section-title {
+  font-family: var(--font-display); font-size: clamp(32px, 5vw, 52px);
+  font-weight: 800; line-height: 1.05; letter-spacing: -0.3px;
+}
+.section-title.light { color: var(--white); }
+.section-title.dark { color: var(--text-dark); }
+.section-divider {
+  width: 48px; height: 3px; background: var(--blue-accent);
+  border-radius: 2px; margin: 20px 0 24px;
+}
+.section-divider.orange { background: var(--orange); }
+
+/* ===== ABOUT ===== */
+#about { background: var(--white); }
+.about-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+}
+.about-text p { font-size: 16px; line-height: 1.8; color: var(--text-body); margin-bottom: 16px; }
+.about-chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+.chip {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--grey-light); color: var(--blue);
+  font-family: var(--font-display); font-size: 14px; font-weight: 700;
+  letter-spacing: 0.5px; padding: 8px 16px; border-radius: 4px;
+  border-left: 3px solid var(--blue-accent);
+  transition: background 0.2s, transform 0.2s;
+}
+.chip:hover { background: var(--blue-accent); color: var(--white); transform: translateY(-2px); }
+.about-visual {
+  background: var(--blue-dark); border-radius: 8px;
+  padding: 48px 40px; position: relative; overflow: hidden;
+}
+.about-visual::before {
+  content: ''; position: absolute; top: -80px; right: -80px;
+  width: 250px; height: 250px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(30,90,220,0.4) 0%, transparent 70%);
+}
+.about-visual-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px; position: relative;
+}
+.av-card {
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 6px; padding: 20px; text-align: center;
+}
+.av-card-num {
+  font-family: var(--font-display); font-size: 32px; font-weight: 800;
+  color: var(--blue-bright); line-height: 1;
+}
+.av-card-label { font-size: 12px; color: var(--steel); margin-top: 6px; letter-spacing: 1px; text-transform: uppercase; }
+
+/* ===== PRODUCTS ===== */
+#products { background: var(--grey-light); }
+.products-header { margin-bottom: 48px; }
+.search-filter-bar {
+  display: flex; gap: 16px; margin-bottom: 32px; flex-wrap: wrap; align-items: center;
+}
+.search-wrap {
+  flex: 1; min-width: 220px; position: relative;
+}
+.search-wrap input {
+  width: 100%; padding: 13px 20px 13px 48px;
+  border: 1.5px solid var(--grey-mid); border-radius: 4px;
+  font-family: var(--font-body); font-size: 15px; color: var(--text-dark);
+  background: var(--white); outline: none;
+  transition: border-color 0.2s;
+}
+.search-wrap input:focus { border-color: var(--blue-accent); }
+.search-icon {
+  position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+  color: var(--steel);
+}
+.filter-scroll {
+  display: flex; gap: 8px; flex-wrap: wrap;
+}
+.filter-btn {
+  font-family: var(--font-display); font-size: 13px; font-weight: 700;
+  letter-spacing: 0.5px; text-transform: uppercase;
+  padding: 10px 18px; border-radius: 4px; cursor: pointer;
+  border: 1.5px solid var(--grey-mid); background: var(--white); color: var(--text-body);
+  transition: all 0.2s; white-space: nowrap;
+}
+.filter-btn:hover, .filter-btn.active {
+  background: var(--blue-accent); color: var(--white); border-color: var(--blue-accent);
+}
+.products-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px;
+}
+.product-card {
+  background: var(--white); border-radius: 8px;
+  border: 1px solid rgba(0,0,0,0.07);
+  overflow: hidden; transition: transform 0.25s, box-shadow 0.25s;
+  animation: fadeInUp 0.4s ease both;
+}
+@keyframes fadeInUp {
+  from { opacity:0; transform:translateY(20px); }
+  to { opacity:1; transform:translateY(0); }
+}
+.product-card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(14,32,68,0.12); }
+.product-card-header {
+  background: var(--blue-dark); padding: 20px 24px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.product-card-title {
+  font-family: var(--font-display); font-size: 18px; font-weight: 700;
+  color: var(--white); letter-spacing: 0.3px;
+}
+.product-card-count {
+  font-family: var(--font-display); font-size: 12px; font-weight: 700;
+  color: var(--cyan); background: rgba(6,182,212,0.15);
+  padding: 4px 10px; border-radius: 100px; letter-spacing: 1px;
+}
+.product-card-body { padding: 20px 24px; }
+.brand-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.brand-tag {
+  font-size: 13px; font-weight: 500; color: var(--blue);
+  background: var(--grey-light); padding: 5px 12px; border-radius: 4px;
+  border: 1px solid var(--grey-mid);
+}
+.no-results {
+  text-align: center; padding: 80px 24px;
+  font-family: var(--font-display); font-size: 22px; color: var(--steel);
+  grid-column: 1/-1;
+}
+
+/* ===== CONTACT ===== */
+#contact { background: var(--blue-dark); }
+.contact-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 72px; align-items: start; }
+.contact-info-card {
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px; padding: 40px;
+}
+.contact-item { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 32px; }
+.contact-icon {
+  width: 48px; height: 48px; border-radius: 8px;
+  background: rgba(30,90,220,0.2); border: 1px solid rgba(30,90,220,0.3);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  color: var(--blue-bright); font-size: 20px;
+}
+.contact-item-label { font-size: 11px; font-weight: 600; color: var(--steel); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px; }
+.contact-item-value { font-family: var(--font-display); font-size: 18px; font-weight: 600; color: var(--white); }
+.contact-item-value a:hover { color: var(--cyan); }
+.whatsapp-btn {
+  display: inline-flex; align-items: center; gap: 12px; margin-top: 8px;
+  background: #25D366; color: var(--white);
+  font-family: var(--font-display); font-size: 15px; font-weight: 700;
+  letter-spacing: 0.5px; padding: 13px 24px; border-radius: 4px;
+  transition: opacity 0.2s, transform 0.2s;
+}
+.whatsapp-btn:hover { opacity: 0.9; transform: translateY(-2px); }
+
+.map-card {
+  margin-top: 18px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.04);
+}
+.map-frame {
+  width: 100%;
+  height: 280px;
+  border: 0;
+  display: block;
+}
+
+/* ===== FORM ===== */
+.contact-form { display: flex; flex-direction: column; gap: 16px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-group label {
+  font-size: 12px; font-weight: 600; color: var(--steel);
+  letter-spacing: 1.5px; text-transform: uppercase;
+}
+.form-group input, .form-group textarea {
+  padding: 13px 16px; background: rgba(255,255,255,0.06);
+  border: 1.5px solid rgba(255,255,255,0.1); border-radius: 4px;
+  color: var(--white); font-family: var(--font-body); font-size: 15px;
+  outline: none; transition: border-color 0.2s;
+}
+.form-group input::placeholder, .form-group textarea::placeholder { color: rgba(255,255,255,0.2); }
+.form-group input:focus, .form-group textarea:focus { border-color: var(--blue-bright); }
+.form-group textarea { resize: vertical; min-height: 120px; }
+.form-submit {
+  padding: 15px 32px; background: var(--blue-accent); color: var(--white);
+  font-family: var(--font-display); font-size: 16px; font-weight: 700;
+  letter-spacing: 1px; text-transform: uppercase; border: none; border-radius: 4px;
+  cursor: pointer; transition: background 0.25s, transform 0.2s; align-self: flex-start;
+}
+.form-submit:hover { background: var(--blue-bright); transform: translateY(-2px); }
+.form-msg {
+  padding: 14px 20px; border-radius: 4px; font-weight: 500; display: none;
+}
+.form-msg.success { background: rgba(6,182,212,0.15); border: 1px solid var(--cyan); color: var(--cyan); display: block; }
+.form-msg.error { background: rgba(239,68,68,0.15); border: 1px solid #ef4444; color: #ef4444; display: block; }
+
+/* ===== FOOTER ===== */
+footer {
+  background: #050d1a; padding: 32px 24px;
+  border-top: 1px solid rgba(30,90,220,0.15);
+}
+.footer-inner {
+  max-width: 1280px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: gap;
+}
+.footer-left { font-family: var(--font-display); font-size: 13px; color: var(--steel); letter-spacing: 0.5px; }
+.footer-right { font-size: 13px; color: rgba(143,174,196,0.5); }
+
+/* ===== FLOATING WHATSAPP ===== */
+.wa-float {
+  position: fixed; bottom: 28px; right: 28px; z-index: 999;
+  width: 56px; height: 56px; border-radius: 50%;
+  background: #25D366; display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 8px 24px rgba(37,211,102,0.35);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.wa-float:hover { transform: scale(1.1); box-shadow: 0 12px 32px rgba(37,211,102,0.5); }
+.wa-float svg { width: 28px; height: 28px; fill: white; }
+
+/* ===== SCROLL REVEAL ===== */
+.reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .about-grid { grid-template-columns: 1fr; gap: 48px; }
+  .contact-grid { grid-template-columns: 1fr; gap: 48px; }
+  .form-row { grid-template-columns: 1fr; }
+}
+@media (max-width: 700px) {
+  .nav-links { display: none; }
+  .hamburger { display: flex; }
+  .hero-stats { gap: 24px; }
+  .stat-num { font-size: 28px; }
+  .hero-btns { flex-direction: column; }
+  .btn-primary, .btn-outline { width: 100%; justify-content: center; }
+  .footer-inner { flex-direction: column; gap: 8px; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <span class="nav-logo-main">Shanti Precision</span>
+      <span class="nav-logo-sub">Machine Pvt. Ltd.</span>
+    </a>
+    <div class="nav-links">
+      <a href="#hero">Home</a>
+      <a href="#about">About</a>
+      <a href="#products">Products</a>
+      <a href="#contact" class="nav-cta">Contact Us</a>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="#hero" onclick="closeMobile()">Home</a>
+    <a href="#about" onclick="closeMobile()">About</a>
+    <a href="#products" onclick="closeMobile()">Products</a>
+    <a href="#contact" onclick="closeMobile()">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+  <div class="hero-inner">
+    <div class="hero-badge"><span></span>Industrial Automation Specialists</div>
+    <h1 class="hero-h1">Precision in <em>Automation</em>,<br>Excellence in Engineering</h1>
+    <div class="hero-accent-line">
+      <div class="hero-line"></div>
+      <div class="hero-tagline">Trusted Partner for Automation Solutions</div>
+    </div>
+    <p class="hero-p">Supplying world-class electrical components, drives, controllers, and automation equipment from globally leading brands — delivered to your facility with expertise.</p>
+    <div class="hero-btns">
+      <a href="#contact" class="btn-primary">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 12 19.79 19.79 0 0 1 1.08 3.4 2 2 0 0 1 3.05 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 16.92z"/></svg>
+        Contact Us
+      </a>
+      <a href="#products" class="btn-outline">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="2" y="3" width="7" height="7"/><rect x="15" y="3" width="7" height="7"/><rect x="15" y="14" width="7" height="7"/><rect x="2" y="14" width="7" height="7"/></svg>
+        Browse Products
+      </a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item"><div class="stat-num">17<span>+</span></div><div class="stat-label">Product Categories</div></div>
+      <div class="stat-item"><div class="stat-num">100<span>+</span></div><div class="stat-label">Brands Available</div></div>
+      <div class="stat-item"><div class="stat-num">25<span>+</span></div><div class="stat-label">Years Experience</div></div>
+      <div class="stat-item"><div class="stat-num">500<span>+</span></div><div class="stat-label">Clients Served</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="section reveal">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-text">
+        <div class="section-label">Who We Are</div>
+        <h2 class="section-title dark">Shanti Precision Machine Pvt. Ltd.</h2>
+        <div class="section-divider"></div>
+        <p>We are a leading supplier of industrial automation components and electrical equipment in India. With over two decades of industry experience, we connect manufacturers and engineers with the world's most reliable automation brands.</p>
+        <p>From Variable Frequency Drives and PLC Controllers to Pneumatic Systems and Proximity Sensors, our comprehensive product portfolio supports every stage of your automation journey.</p>
+        <p>Our team combines deep technical knowledge with a commitment to timely delivery and genuine product sourcing — ensuring you get the right component, every time.</p>
+        <div class="about-chips">
+          <span class="chip">VFD Drives</span>
+          <span class="chip">PLC Systems</span>
+          <span class="chip">CNC Controllers</span>
+          <span class="chip">Motors</span>
+          <span class="chip">Sensors</span>
+          <span class="chip">Pneumatics</span>
+          <span class="chip">Wiring</span>
+          <span class="chip">Connectors</span>
+        </div>
+      </div>
+      <div class="about-visual">
+        <div class="about-visual-grid">
+          <div class="av-card"><div class="av-card-num">17</div><div class="av-card-label">Categories</div></div>
+          <div class="av-card"><div class="av-card-num">100+</div><div class="av-card-label">Brands</div></div>
+          <div class="av-card"><div class="av-card-num">25+</div><div class="av-card-label">Years</div></div>
+          <div class="av-card"><div class="av-card-num">24/7</div><div class="av-card-label">Support</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section id="products" class="section reveal">
+  <div class="container">
+    <div class="products-header">
+      <div class="section-label">What We Offer</div>
+      <h2 class="section-title dark">Product Categories & Brands</h2>
+      <div class="section-divider orange"></div>
+    </div>
+    <div class="search-filter-bar">
+      <div class="search-wrap">
+        <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="search-input" placeholder="Search categories or brands…" />
+      </div>
+      <div class="filter-scroll" id="filter-btns">
+        <button class="filter-btn active" data-filter="all">All</button>
+      </div>
+    </div>
+    <div class="products-grid" id="products-grid">
+      <div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--steel)">Loading products…</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="section reveal">
+  <div class="container">
+    <div class="section-label" style="color:var(--cyan)">Get In Touch</div>
+    <h2 class="section-title light">Contact Us</h2>
+    <div class="section-divider"></div>
+    <div class="contact-grid" style="margin-top:48px">
+      <div>
+        <div class="contact-info-card">
+          <div class="contact-item">
+            <div class="contact-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 12 19.79 19.79 0 0 1 1.08 3.4 2 2 0 0 1 3.05 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 16.92z"/></svg>
+            </div>
+            <div>
+              <div class="contact-item-label">Phone</div>
+              <div class="contact-item-value"><a href="tel:+919825276581">{{ company.phone }}</a></div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <div>
+              <div class="contact-item-label">Email</div>
+              <div class="contact-item-value"><a href="mailto:{{ company.email }}">{{ company.email }}</a></div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div>
+              <div class="contact-item-label">Address</div>
+              <div class="contact-item-value"><a href="{{ company.map_link }}" target="_blank" rel="noopener">{{ company.address }}</a></div>
+            </div>
+          </div>
+          <a href="https://wa.me/{{ company.whatsapp }}" target="_blank" class="whatsapp-btn">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+            Chat on WhatsApp
+          </a>
+        </div>
+        <div class="map-card">
+          <iframe
+            class="map-frame"
+            src="{{ company.map_embed_url }}"
+            title="Shanti Precision Location Map"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+      </div>
+      <div>
+        <form class="contact-form" id="contact-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Your Name</label>
+              <input type="text" id="f-name" placeholder="Rajesh Kumar" required />
+            </div>
+            <div class="form-group">
+              <label>Phone Number</label>
+              <input type="tel" id="f-phone" placeholder="+91 98765 43210" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" id="f-email" placeholder="you@company.com" />
+          </div>
+          <div class="form-group">
+            <label>Message</label>
+            <textarea id="f-message" placeholder="Describe the products or quantity you need…"></textarea>
+          </div>
+          <button type="submit" class="form-submit">Send Message →</button>
+          <div class="form-msg" id="form-msg"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-left">© 2025 <strong>Shanti Precision Machine Pvt. Ltd.</strong> — All rights reserved.</div>
+    <div class="footer-right">Industrial Automation & Electrical Components</div>
+  </div>
+</footer>
+
+<!-- FLOATING WHATSAPP -->
+<a href="https://wa.me/{{ company.whatsapp }}" target="_blank" class="wa-float" title="Chat on WhatsApp">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+</a>
+
+<script>
+// ===== MOBILE MENU =====
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobile-menu');
+hamburger.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+function closeMobile() { mobileMenu.classList.remove('open'); }
+
+// ===== SCROLL REVEAL =====
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ===== LOAD PRODUCTS FROM BACKEND =====
+let allProducts = {};
+async function loadProducts() {
+  try {
+    const res = await fetch('/get-products');
+    allProducts = await res.json();
+    buildFilters();
+    renderCards(allProducts);
+  } catch(e) {
+    document.getElementById('products-grid').innerHTML = '<div class="no-results">Failed to load products. Please refresh.</div>';
+  }
+}
+
+function buildFilters() {
+  const container = document.getElementById('filter-btns');
+  // Keep "All" button
+  Object.keys(allProducts).forEach(cat => {
+    const btn = document.createElement('button');
+    btn.className = 'filter-btn';
+    btn.dataset.filter = cat;
+    btn.textContent = cat;
+    btn.addEventListener('click', () => applyFilter(cat));
+    container.appendChild(btn);
+  });
+  document.querySelector('[data-filter="all"]').addEventListener('click', () => applyFilter('all'));
+}
+
+function applyFilter(filter) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === filter));
+  const searchVal = document.getElementById('search-input').value.toLowerCase();
+  let subset = filter === 'all' ? allProducts : Object.fromEntries([[filter, allProducts[filter]]]);
+  renderCards(filterBySearch(subset, searchVal));
+}
+
+function filterBySearch(products, query) {
+  if (!query) return products;
+  const result = {};
+  Object.entries(products).forEach(([cat, brands]) => {
+    if (cat.toLowerCase().includes(query) || brands.some(b => b.toLowerCase().includes(query))) {
+      result[cat] = brands;
+    }
+  });
+  return result;
+}
+
+function renderCards(products) {
+  const grid = document.getElementById('products-grid');
+  const entries = Object.entries(products);
+  if (entries.length === 0) {
+    grid.innerHTML = '<div class="no-results">No products found. Try a different search.</div>';
+    return;
+  }
+  grid.innerHTML = entries.map(([cat, brands], i) => `
+    <div class="product-card" style="animation-delay:${i * 0.04}s">
+      <div class="product-card-header">
+        <div class="product-card-title">${cat}</div>
+        <div class="product-card-count">${brands.length} brands</div>
+      </div>
+      <div class="product-card-body">
+        <div class="brand-tags">
+          ${brands.map(b => `<span class="brand-tag">${b}</span>`).join('')}
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ===== SEARCH =====
+let searchTimeout;
+document.getElementById('search-input').addEventListener('input', function() {
+  clearTimeout(searchTimeout);
+  searchTimeout = setTimeout(() => {
+    const activeFilter = document.querySelector('.filter-btn.active').dataset.filter;
+    let subset = activeFilter === 'all' ? allProducts : Object.fromEntries([[activeFilter, allProducts[activeFilter]]]);
+    renderCards(filterBySearch(subset, this.value.toLowerCase()));
+  }, 200);
+});
+
+// ===== CONTACT FORM =====
+document.getElementById('contact-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const msgEl = document.getElementById('form-msg');
+  msgEl.className = 'form-msg';
+  const payload = {
+    name: document.getElementById('f-name').value,
+    phone: document.getElementById('f-phone').value,
+    email: document.getElementById('f-email').value,
+    message: document.getElementById('f-message').value
+  };
+  if (!payload.name || !payload.message) {
+    msgEl.textContent = 'Please fill in your name and message.';
+    msgEl.className = 'form-msg error';
+    return;
+  }
+  try {
+    const res = await fetch('/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    msgEl.textContent = data.message;
+    msgEl.className = 'form-msg ' + (data.success ? 'success' : 'error');
+    if (data.success) document.getElementById('contact-form').reset();
+  } catch(err) {
+    msgEl.textContent = 'Something went wrong. Please try again.';
+    msgEl.className = 'form-msg error';
+  }
+});
+
+// Init
+loadProducts();
+</script>
+</body>
+</html>
