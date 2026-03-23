@@ -1,3 +1,5 @@
+app.py
+.vercel/
 .venv/
 __pycache__/
 .git/

@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 
-app = Flask(__name__) # Default is 'templates'
+app = Flask(__name__, template_folder="api/templates")
 
 PRODUCTS = {
     "VFD": ["Siemens", "ABB", "Schneider Electric", "Danfoss", "Yaskawa", "Delta", "Fuji Electric", "Mitsubishi"],
